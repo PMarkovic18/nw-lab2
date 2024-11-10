@@ -128,7 +128,7 @@ export default function CsfrPage() {
                     </table>
                 </div>)}
                 <p className="text-lg">
-                    Ulogirani ste kao Žrtva.Napadač pokušava ukrasti vaš auth token i napraviti request u vaše ime. U ovom primjeru prebaciti novac na svoj račun. Pritiskom na gumb FREE IPHONE šalje se request u vaše ime. Ovakav gumb je inače žrtva stisne na mailu ili nekoj drugoj stranici. Radi jednostavnosti sada je taj gumb tu. Ako je žrtva ulogirana u bankovnu aplikaciju kada stisne gumbe, napadač uspješno odrađuje napad. Ako se hovera preko gumba vidjet će se gdje gumb vodi. U prikazu inznad može se vidjeti stanje računa žrtve, napdača i ciljanog korisnika (ako ga ima)
+                    Ulogirani ste kao Žrtva.Napadač pokušava ukrasti vaš auth token i napraviti request u vaše ime. U ovom primjeru prebaciti novac na svoj račun. Pritiskom na gumb FREE IPHONE šalje se request u vaše ime. Ovakav gumb inače žrtva stisne na mailu ili nekoj drugoj stranici. Radi jednostavnosti sada je taj gumb tu. Ako je žrtva ulogirana u bankovnu aplikaciju kada stisne gumbe, napadač uspješno odrađuje napad. Ako se hovera preko gumba vidjet će se gdje gumb vodi. U prikazu inznad može se vidjeti stanje računa žrtve, napdača i ciljanog korisnika (ako ga ima). Prijenos novca vrši se putem GET requesta u kojeg browser automatski stavlja auth tokene i tako napadač može iskoristiti tu ranjivost.
                 </p>
             </section>
         </main>

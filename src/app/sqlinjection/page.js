@@ -84,13 +84,13 @@ export default function SqlInjectionPage() {
                 </div>
 
                 <div className="space-y-2">
-                    <label htmlFor="query" className="text-lg">Upiši username za query:</label>
+                    <label htmlFor="query" className="text-lg">Upiši username za pretragu:</label>
                     <input
                         id="query"
                         type="text"
                         value={queryInput}
                         onChange={handleInputChange}
-                        placeholder="Upiši parametar za query"
+                        placeholder="Upiši username npr. user1"
                         className="w-full p-3 border border-gray-300 rounded-lg"
                     />
                 </div>
@@ -107,13 +107,13 @@ export default function SqlInjectionPage() {
                         onClick={handleSubmit}
                         className="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-300"
                     >
-                        Submit
+                        Traži
                     </button>
                     <button
                         onClick={clearResult}
                         className="px-4 py-2 bg-rose-500 text-white font-semibold rounded hover:bg-rose-600 transition duration-300"
                     >
-                        Clear result
+                        Obriši rezultat
                     </button>
                     <Link
                         href="/"
