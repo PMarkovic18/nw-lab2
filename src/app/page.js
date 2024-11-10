@@ -15,14 +15,14 @@ export default function Home() {
           <Link
             href="/sqlinjection"
             className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-300">
-            Go to SQL Injection
+            Idi na SQL Injection
           </Link>
 
           {/* Button to CSFR Page */}
           <Link
             href="/csfr"
             className="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition duration-300">
-            Go to CSFR
+            Idi na CSFR
           </Link>
         </div>
       </section>

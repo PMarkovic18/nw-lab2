@@ -5,7 +5,12 @@ import Link from 'next/link';
 export default function SqlInjectionPage() {
     const [vulnerabilityEnabled, setVulnerabilityEnabled] = useState(false);
     const [queryInput, setQueryInput] = useState('');
-    const [executionResult, setExecutionResult] = useState('');
+    const [executionResult, setExecutionResult] = useState(null);
+
+
+    const clearResult = () => {
+        setExecutionResult(null);
+    }
 
     const handleCheckboxChange = () => {
         setVulnerabilityEnabled(!vulnerabilityEnabled);
@@ -16,7 +21,7 @@ export default function SqlInjectionPage() {
     };
 
     const handleSubmit = async () => {
-        setExecutionResult('');
+        setExecutionResult(null);
         const tautologyPattern = /^[a-zA-Z0-9_-]+$/;
 
         if (queryInput == '') {
@@ -42,20 +47,14 @@ export default function SqlInjectionPage() {
         try {
             const response = await fetch('/api/sqlinjection', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    sql: queryInput,
-                    vulnerabilityEnabled,
-                }),
+                body: JSON.stringify({ query: queryInput })
             });
-
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.error || 'Error.');
             }
-            setExecutionResult(JSON.stringify(data.result, null, 2));
+            setExecutionResult(data);
+            console.log(data)
         } catch (error) {
             if (error instanceof Error) {
                 alert(`Error: ${error.message}`);
@@ -85,7 +84,7 @@ export default function SqlInjectionPage() {
                 </div>
 
                 <div className="space-y-2">
-                    <label htmlFor="query" className="text-lg">Upiši parametar za query:</label>
+                    <label htmlFor="query" className="text-lg">Upiši username za query:</label>
                     <input
                         id="query"
                         type="text"
@@ -99,28 +98,60 @@ export default function SqlInjectionPage() {
                 <div>
                     <p className="text-sm text-gray-500">
                         {vulnerabilityEnabled
-                            ? 'SQL injection ranjivost je omogućena. Parametar se može koristiti u nesigurnom upitu.'
+                            ? "SQL injection ranjivost je omogućena. Pokušajte    ' OR '1'='1"
                             : 'SQL injection ranjivost je onemogućena. Parametar je siguran.'}
                     </p>
                 </div>
-                {/* Submit and Go Back Buttons */}
                 <div className="flex space-x-4 mt-6">
-                    {/* Submit Button */}
                     <button
                         onClick={handleSubmit}
                         className="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition duration-300"
                     >
                         Submit
                     </button>
-
-                    {/* Go Back to Home Button */}
+                    <button
+                        onClick={clearResult}
+                        className="px-4 py-2 bg-rose-500 text-white font-semibold rounded hover:bg-rose-600 transition duration-300"
+                    >
+                        Clear result
+                    </button>
                     <Link
                         href="/"
                         className="px-4 py-2 bg-gray-500 text-white font-semibold rounded hover:bg-gray-600 transition duration-300">
                         Nazad na početnu
                     </Link>
+
                 </div>
             </section>
+
+            {/* Query Result Section */}
+            {executionResult && executionResult[0] && (
+                <section className="w-1/2 mt-8 p-8 bg-white rounded-lg shadow-lg text-gray-700">
+                    <h2 className="text-2xl font-semibold mb-4">Query Result</h2>
+                    <table className="w-full border border-gray-300">
+                        <thead>
+                            <tr>
+                                {Object.keys(executionResult[0]).map((column) => (
+                                    <th key={column} className="border px-4 py-2 bg-gray-100">
+                                        {column}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {executionResult.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {Object.values(row).map((value, colIndex) => (
+                                        <td key={colIndex} className="border px-4 py-2">
+                                            {value === null ? 'NULL' : value.toString()}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </section>
+            )}
         </main>
     );
 }

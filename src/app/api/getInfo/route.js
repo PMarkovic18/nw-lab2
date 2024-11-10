@@ -1,10 +1,9 @@
 import { query } from '@/lib/db';
+export async function GET(req) {
+    const destinationAccount = req.nextUrl.searchParams.get('destinationAccount');
 
-export async function POST(req) {
     try {
-        const { query: userQuery } = await req.json();
-        console.log(userQuery);
-        const { rows } = await query(`SELECT * FROM users WHERE username = '${userQuery}'`);
+        const { rows } = await query(`SELECT username,account_balance FROM users WHERE username = 'zrtva' OR username = 'napadac' OR username = '${destinationAccount}'`);
         return new Response(JSON.stringify(rows), { status: 200 });
     } catch (error) {
         console.error('Database query error:', error);
